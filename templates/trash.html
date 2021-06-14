@@ -1,0 +1,117 @@
+{% import  "bootstrap/wtf.html" as wtf %}
+{% extends 'bootstrap/base.html' %}
+{% block head %}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title>Мусорные отходы</title>
+<script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
+<!-- Google fonts-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+<!-- Core theme CSS (includes Bootstrap)-->
+<link href="static/css/styles.css" rel="stylesheet" />
+{% endblock %}
+{% block body %}        <!-- Navigation-->
+<nav class="navbar navbar-expand-xl bg-secondary text-uppercase fixed-top" id="mainNav">
+	<div class="container">
+		<a class="navbar-brand" href='/index'>ULCA</a>
+		<button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    Menu
+			<i class="fas fa-bars"></i>
+		</button>
+		<div class="collapse navbar-collapse" id="collapsibleNavbar">
+			<ul class="navbar-nav mx-auto ">
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/basic_data">основные данные</a></li>
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/energy">энергопотребление</a></li>
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/water">водопотребление</a></li>
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/trash">мусорные отходы</a></li>
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/teplo">теплопотребление</a></li>
+				{% if ((heat|length >= 1) and (basic|length >= 1) and (trash|length >= 1) and (water|length >= 1) and (energy|length >= 1)) %}
+						<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/calculate">отчет</a></li>
+				{% endif %}		</ul>
+		</div>
+	</div>
+</nav>
+<header class="masthead  text-center">
+	<div class="container d-flex  flex-column">
+		<p class="h1  text-uppercase mb-0">Мусорные отходы</>
+		<br>
+		<div class="container">
+
+	<div class="container">
+
+	<div class="content">
+		{% if trash|length < 1 %}
+		<h4 style="text-align: center">Сведения еще не добавлены</h4>
+		{% else %}
+				<div class="table-responsive">
+
+		<table class="table table-striped">
+			<tr class="align-middle">
+				<td align="center">Отход</td>
+				<td align="center">Количество (кг)</td>
+				<td align="center">Тип мусора</td>
+				<td align="center">Возможность переработки</td>
+				<td align="center"></td>
+			</tr>
+			{% for tr in trash %}
+			<tr>
+				<td align="center">{{ tr.trash_name }} </td>
+				<td align="center">{{ tr.trash_count}} </td>
+				<td align="center">{{ tr.trash_type}} </td>
+				<td align="center">{{ tr.trash_style }} </td>
+				<td align="center"><a class="mx-0 btn-secondary py-2 px-0 px-lg-2 rounded text-decoration-none" href="/trash/delete/{{tr.id}}">Удалить</a></td>
+			</tr>
+			{% endfor %}
+		</table>
+				</div>
+		{% endif %}
+
+		<form method="post" class="form">
+			<input type="text" name="trash_name" id="trash_name" class="form-control" required placeholder="Наименование отхода">
+			<input type="number" name="trash_count" id="trash_count" class="form-control" required placeholder="Количество(кг)">
+			<input type="text" name="trash_type" id="trash_type" class="form-control" required pattern="стекло|пластмасса|бумага|другое" placeholder="Тип мусора(стекло\пластмасса\бумага\другое)">
+			<input type="text" name="trash_style" id="trash_style" class="form-control" required pattern="да|нет" placeholder="Возможность переработки(да\нет)">
+			<br>
+			<input type="submit" class="mx-auto nav-link py-2 px-0 px-lg-2 rounded btn-secondary" value="Добавить">
+		</form>
+        <br>
+		<button class="mx-auto nav-link py-2 px-0 px-lg-2 rounded btn-secondary"><a class="text-decoration-none" href="/teplo">Следующая страница</a> </button>
+	</div>
+</div>
+</div>
+	</div>
+</header>
+<!-- Footer-->
+<footer class="footer text-center">
+	<div class="container">
+		<div class="row">
+			<!-- Footer Location-->
+			<div class="col-lg-4 mb-5 mb-lg-0">
+				<h4 class="text-uppercase mb-4">адрес</h4>
+				<p class="lead mb-0">
+					пр. Ленина, 76, Челябинск
+				</p>
+			</div>
+			<!-- Footer Social Icons-->
+			<div class="col-lg-4 mb-5 mb-lg-0">
+				<h4 class="text-uppercase mb-4">соцсети</h4>
+				<a class="btn btn-outline-light btn-social mx-1" href="https:\\vk.com/hitrij_tatarin"><i class="fab fa-fw fa-vk"></i></a>
+				<a class="btn btn-outline-light btn-social mx-1" href="https:\\github.com/burcev60"><i class="fab fa-fw fa-github"></i></a>
+				<a class="btn btn-outline-light btn-social mx-1" href="https:\\google.com"><i class="fab fa-fw fa-instagram"></i></a>
+			</div>
+			<!-- Footer About Text-->
+			<div class="col-lg-4">
+				<h4 class="text-uppercase mb-4">ulca</h4>
+				<p class="lead mb-0">
+					Почта:
+					<a href="mailto:nikita-pronin@yandex.ru" class="text-decoration-none"> nikita-pronin@yandex.ru</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</footer>
+{% endblock %}

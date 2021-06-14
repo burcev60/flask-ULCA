@@ -1,0 +1,168 @@
+{% import  "bootstrap/wtf.html" as wtf %}
+{% extends 'bootstrap/base.html' %}
+{% block head %}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title>Отчет</title>
+<script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
+<!-- Google fonts-->
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+<!-- Core theme CSS (includes Bootstrap)-->
+<link href="static/css/styles.css" rel="stylesheet" />
+{% endblock %}
+{% block body %}        <!-- Navigation-->
+<nav class="navbar navbar-expand-xl bg-secondary text-uppercase fixed-top" id="mainNav">
+	<div class="container">
+		<a class="navbar-brand" href='/index'>ULCA</a>
+		<button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+		Menu
+		<i class="fas fa-bars"></i>
+		</button>
+		<div class="collapse navbar-collapse" id="collapsibleNavbar">
+			<ul class="navbar-nav mx-auto ">
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/basic_data">основные данные</a></li>
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/energy">энергопотребление</a></li>
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/water">водопотребление</a></li>
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/trash">мусорные отходы</a></li>
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/teplo">теплопотребление</a></li>
+				{% if ((heat|length >= 1) and (basic|length >= 1) and (trash|length >= 1) and (water|length >= 1) and (energy|length >= 1)) %}
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/calculate">отчет</a></li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>
+<header class="masthead">
+	<div class="container d-flex  flex-column" >
+		<p class="h1 text-uppercase mb-0 text-center">отчет</p>
+		<br>
+		<div class="container">
+			<table class="table align-middle">
+				<tr>
+					<td class="text-center">Анализируемая величина</td>
+					<td class="text-center">Значение на организацию</td>
+					<td class="text-center">Значение на человека</td>
+					<td class="text-center">Норма на организацию</td>
+					<td class="text-center">Норма на человека</td>
+					<td class="text-center">Комментарий</td>
+				</tr>
+				<tr>
+					<td class="text-center">Энергопотребление</td>
+					<td class="text-center">{{energy_calc}} кВт/ч</td>
+					<td class="text-center">{{(energy_calc/people_count)|round(2, 'floor')}} кВт/ч</td>
+					<td class="text-center">{{grade_energy}} кВт/ч</td>
+					<td class="text-center">{{grade_energy_people}} кВт/ч</td>
+					{% if energy_calc >= grade_energy%}
+					<td>
+						Следует сократить потребление энергии, так как они превышают установленный допустимый уровень по нормам СНиП
+							<br><br>Снижение потребления энергии позволит обеспечить при малых капитальных затратах вкладываемых в развитие инфраструктуры подключить новых потребителей. Так же поможет в решении проблем связанных с отчуждением санитарно-защитных зон, что отрицательно сказывается на выделении земельных участков для нового, необходимого строительства объектов генерации.
+
+					</td>
+					{% else %}
+					<td>Значение энергопотребления находится в норме по показателям СНиП
+						<br><br>Снижение потребления энергии позволит обеспечить при малых капитальных затратах вкладываемых в развитие инфраструктуры подключить новых потребителей. Так же поможет в решении проблем связанных с отчуждением санитарно-защитных зон, что отрицательно сказывается на выделении земельных участков для нового, необходимого строительства объектов генерации.
+					</td>
+					{% endif %}
+				</tr>
+				<tr>
+					<td class="text-center">Водопотребление</td>
+					<td class="text-center">{{water_calc}} М<sup><small>3</small></sup></td>
+					<td class="text-center">{{(water_calc/people_count)|round(2, 'floor')}} М<sup><small>3</small></sup></td>
+					<td class="text-center">{{grade_water }} М<sup><small>3</small></sup></td>
+					<td class="text-center">{{grade_water_people}} М<sup><small>3</small></sup></td>
+					{% if water_calc >= grade_water%}
+					<td>Следует сократить потребление воды, так как они превышают установленный допустимый уровень по нормам СанПин
+						<br><br>Снижение водопотребления может быть эффективной экологической (или экономической) целью само по себе. В дополнение к этому, с точки зрения снижения загрязняющих выбросов, любая вода, проходящая в промышленном процессе, ухудшается по качеству вследствие добавок загрязняющих веществ, и, поэтому, имеются четкие выгоды, получаемые от снижения водопотребления.
+					</td>
+					{% else %}
+					<td>Значение водопотребления находится в норме по показателям СанПин
+						<br><br>Снижение водопотребления может быть эффективной экологической (или экономической) целью само по себе. В дополнение к этому, с точки зрения снижения загрязняющих выбросов, любая вода, проходящая в промышленном процессе, ухудшается по качеству вследствие добавок загрязняющих веществ, и, поэтому, имеются четкие выгоды, получаемые от снижения водопотребления.
+					</td>
+					{% endif %}
+				</tr>
+				<tr>
+					<td class="text-center">Мусорные отходы</td>
+					<td class="text-center">{{trash_calc}} Т/д</td>
+					<td class="text-center">{{(trash_calc/people_count*1000)|round(2, 'floor')}} КГ/д</td>
+					<td class="text-center">{{grade_trash}} Т/д</td>
+					<td class="text-center">{{grade_trash_people}} КГ/д</td>
+					{% if trash_calc >= grade_trash%}
+					<td>Следует сократить мусорные отходы, так как они превышают установленный допустимый уровень по нормам СанПин
+						<br><br>Некоторые виды бытового и производственного мусора способны нанести ощутимый вред человеку и окружающей среде и относятся к классу экологически опасных отходов. Соответственно выполнение работ, связанных с их вторичной переработкой или утилизацией, требует специальной подготовки, четко регламентированного порядка действий и контролируется на государственном уровне.
+					</td>
+					{% else %}
+					<td>Значение мусорных отходов находится в норме по показателям СанПин
+						<br><br>Некоторые виды бытового и производственного мусора способны нанести ощутимый вред человеку и окружающей среде и относятся к классу экологически опасных отходов. Соответственно выполнение работ, связанных с их вторичной переработкой или утилизацией, требует специальной подготовки, четко регламентированного порядка действий и контролируется на государственном уровне.
+					</td>
+					{% endif %}
+				</tr>
+				<tr>
+					<td class="text-center">Теплопотребление</td>
+					<td class="text-center">{{teplo_calc}} гкал/ч</td>
+
+					{% if (teplo_calc/people_count*1000000)>=1000 %}
+					<td class="text-center">{{(teplo_calc/people_count*1000)|round(3,'floor')}} гкал/ч</td>
+					{% else %}
+					<td class="text-center">{{(teplo_calc/people_count*1000000)|round(3,'floor')}} ккал/ч</td>
+					{% endif %}
+
+					<td class="text-center">{{grade_teplo}} гкал/ч</td>
+
+					{% if (grade_teplo_people*1000000)>=1000 %}
+					<td class="text-center">{{grade_teplo_people*1000}} гкал/ч</td>
+					{% else %}
+					<td class="text-center">{{grade_teplo_people*1000000}} ккал/ч</td>
+					{% endif %}
+
+					{% if teplo_calc >= grade_teplo%}
+					<td>Следует сократить теплопотребление, так как они превышают установленный допустимый уровень по нормам СНиП
+						<br><br>При сжигании любого топлива в ТЭЦ и котельных образуется диоксид углерода - CO<sub><small>2</small></sub>,
+						являющийся конечным продуктом реакции горения, который вызыавет парниковый эффект. При этом снижается количество кислорода, изменяются условия теплового
+						баланса. Окислы азота и углеводороды - основные компоненты городского смога.
+					</td>
+					{% else %}
+					<td>Значение теплопотребление находится в норме по показателям СНиП
+						<br><br>При сжигании любого топлива в ТЭЦ и котельных образуется диоксид углерода - CO<sub><small>2</small></sub>,
+						являющийся конечным продуктом реакции горения, который вызыавет парниковый эффект. При этом снижается количество кислорода, изменяются условия теплового
+						баланса. Окислы азота и углеводороды - основные компоненты городского смога.
+					</td>
+					{% endif %}
+				</tr>
+			</table>
+		</div>
+	</div>
+</header>
+<!-- Footer-->
+<footer class="footer text-center">
+	<div class="container">
+		<div class="row">
+			<!-- Footer Location-->
+			<div class="col-lg-4 mb-5 mb-lg-0">
+				<h4 class="text-uppercase mb-4">адрес</h4>
+				<p class="lead mb-0">
+					пр. Ленина, 76, Челябинск
+				</p>
+			</div>
+			<!-- Footer Social Icons-->
+			<div class="col-lg-4 mb-5 mb-lg-0">
+				<h4 class="text-uppercase mb-4">соцсети</h4>
+				<a class="btn btn-outline-light btn-social mx-1" href="https:\\vk.com/hitrij_tatarin"><i class="fab fa-fw fa-vk"></i></a>
+				<a class="btn btn-outline-light btn-social mx-1" href="https:\\github.com/burcev60"><i class="fab fa-fw fa-github"></i></a>
+				<a class="btn btn-outline-light btn-social mx-1" href="https:\\google.com"><i class="fab fa-fw fa-instagram"></i></a>
+			</div>
+			<!-- Footer About Text-->
+			<div class="col-lg-4">
+				<h4 class="text-uppercase mb-4">ulca</h4>
+				<p class="lead mb-0">
+					Почта:
+					<a href="mailto:nikita-pronin@yandex.ru" class="text-decoration-none"> nikita-pronin@yandex.ru</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</footer>
+{% endblock %}

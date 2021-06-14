@@ -1,0 +1,95 @@
+{% import  "bootstrap/wtf.html" as wtf %}
+{% extends 'bootstrap/base.html' %}
+    {% block head %}
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>University LCA</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="static/css/styles.css" rel="stylesheet" />
+    {% endblock %}
+{% block body %}
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top " id="mainNav">
+            <div class="container">
+                <a class="navbar-brand" href='/index'>UNIVERSITY LCA</a>
+                <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/basic_data">ПЕРЕЙТИ К РАСЧЕТАМ</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Masthead-->
+        <header class="masthead bg-primary text-white text-center">
+            <div class="container d-flex align-items-center flex-column">
+                <p class="h1 text-uppercase mb-0">оценка жизненного цикла универститета</p>
+            </div>
+        </header>
+
+        <!-- About Section-->
+        <section class="page-section" id="about">
+            <div class="container">
+                <!-- About Section Heading-->
+                <p class="h1 page-section-heading text-center text-uppercase text-secondary">концепция</p>
+                <!-- Icon Divider-->
+                <div class="divider-custom divider-light">
+                    <div class="divider-custom-line"></div>
+                </div>
+                <!-- About Section Content-->
+                <div class="row">
+                    <div class="col-lg-12"><p class="lead">
+                    <p class="lead">Оценка жизненного цикла продукции (LCA) — сложная и комплексная методика оценки воздействия продукции на окружающую среду на всех этапах ее жизненного цикла: начиная от добычи сырья, продолжая производством, применением, ремонтом, обслуживанием, транспортировкой продукта на всех этапах, и заканчивая захоронением или переработкой отходов. Метод является единственной возможностью объективно определить, какие материалы действительно экологичны, а какие — лишь кажутся таковыми.</p>
+                <p class="lead">LCA является важным элементом деятельности компаний, которые занимаются производством товаров или предоставляют услуги, и при этом задумываются об экологическом следе, на который непосредственно влияет каждая компания. Помимо производства, LCA может использоваться и в публичном секторе (государственном) для принятия решений: например, для выбора способа обращения с отходами.</p>
+                </div>
+                    </div>
+                <!-- About Section Button-->
+               <button class="mx-auto nav-link py-2 px-0 px-lg-2 rounded btn-secondary"><a class="text-decoration-none" href="/basic_data">ПЕРЕЙТИ К РАСЧЕТАМ</a> </button>
+            </div>
+        </section>
+        <!-- Footer-->
+        <footer class="footer text-center">
+	<div class="container">
+		<div class="row">
+			<!-- Footer Location-->
+			<div class="col-lg-4 mb-5 mb-lg-0">
+				<h4 class="text-uppercase mb-4">адрес</h4>
+				<p class="lead mb-0">
+					пр. Ленина, 76, Челябинск
+				</p>
+			</div>
+			<!-- Footer Social Icons-->
+			<div class="col-lg-4 mb-5 mb-lg-0">
+				<h4 class="text-uppercase mb-4">соцсети</h4>
+				<a class="btn btn-outline-light btn-social mx-1" href="https:\\vk.com/hitrij_tatarin"><i class="fab fa-fw fa-vk"></i></a>
+				<a class="btn btn-outline-light btn-social mx-1" href="https:\\github.com/burcev60"><i class="fab fa-fw fa-github"></i></a>
+				<a class="btn btn-outline-light btn-social mx-1" href="https:\\google.com"><i class="fab fa-fw fa-instagram"></i></a>
+			</div>
+			<!-- Footer About Text-->
+			<div class="col-lg-4">
+				<h4 class="text-uppercase mb-4">ulca</h4>
+				<p class="lead mb-0">
+					Почта:
+					<a href="mailto:nikita-pronin@yandex.ru" class="text-decoration-none"> nikita-pronin@yandex.ru</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</footer>
+
+{% endblock %}

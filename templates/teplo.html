@@ -1,0 +1,121 @@
+{% import  "bootstrap/wtf.html" as wtf %}
+{% extends 'bootstrap/base.html' %}
+{% block head %}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title>Теплопотребление</title>
+<script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
+<!-- Google fonts-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+<!-- Core theme CSS (includes Bootstrap)-->
+<link href="static/css/styles.css" rel="stylesheet" />
+{% endblock %}
+{% block body %}        <!-- Navigation-->
+<nav class="navbar navbar-expand-xl bg-secondary text-uppercase fixed-top" id="mainNav">
+	<div class="container">
+		<a class="navbar-brand" href='/index'>ULCA</a>
+		<button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    Menu
+			<i class="fas fa-bars"></i>
+		</button>
+		<div class="collapse navbar-collapse" id="collapsibleNavbar">
+			<ul class="navbar-nav mx-auto ">
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/basic_data">основные данные</a></li>
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/energy">энергопотребление</a></li>
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/water">водопотребление</a></li>
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/trash">мусорные отходы</a></li>
+				<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/teplo">теплопотребление</a></li>
+				{% if ((heat|length >= 1) and (basic|length >= 1) and (trash|length >= 1) and (water|length >= 1) and (energy|length >= 1)) %}
+						<li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-2 rounded" href="/calculate">отчет</a></li>
+				{% endif %}		</ul>
+		</div>
+	</div>
+</nav>
+<header class="masthead  text-center">
+	<div class="container d-flex  flex-column">
+		<p class="h1  text-uppercase mb-0">теплопотребление</p>
+		<br>
+		<div class="container">
+			<div class="container">
+				<div class="content">
+					{% if heat|length < 1 %}
+					<h4 style="text-align: center">Сведения еще не добавлены</h4>
+					{% else %}
+							<div class="table-responsive">
+
+					<table class="table table-striped">
+						<tr class="align-middle">
+							<td align="center">Наименование здания</td>
+							<td align="center">Средняя наружная температура</td>
+							<td align="center">Отопительные дни</td>
+							<td align="center">Площадь здания</td>
+							<td align="center">Затраченная мощность на обогрев (кВт)</td>
+							<td align="center"></td>
+						</tr>
+						{% for he in heat %}
+						<tr>
+							<td align="center">{{ he.heat_name }} </td>
+							<td align="center">{{ he.delta_heat }} </td>
+							<td align="center">{{ he.heat_days }} </td>
+							<td align="center">{{ he.heat_square}} </td>
+							<td align="center">{{ he.heat_power}} </td>
+							<td align="center"><a class="mx-0 btn-secondary py-2 px-0 px-lg-2 rounded text-decoration-none" href="/teplo/delete/{{he.id}}">Удалить</a></td>
+						</tr>
+						{% endfor %}
+					</table>
+							</div>
+					{% endif %}
+					<form method="post" class="form ">
+						<input type="text" name="heat_name" id="heat_name" class="form-control" required  placeholder="Наименование здания">
+						<input type="number" name="delta_heat" id="delta_heat" class="form-control" required  placeholder="Средняя наружная температура воздуха в отопительный период">
+						<input type="number" name="heat_days" id="heat_days" class="form-control"  required placeholder="Количество отопительных дней">
+						<input type="number" name="heat_square" id="heat_square" class="form-control" required  placeholder="Площадь здания">
+						<input type="number" name="heat_power" id="heat_power" class="form-control" required  placeholder="Затраченная мощность в кВт на отопление">
+						<br>
+						<input type="submit" class="mx-auto nav-link py-2 px-0 px-lg-2 rounded btn-secondary" value="Добавить">
+					</form>
+					<br>
+					{% if ((heat|length >= 1) and (basic|length >= 1) and (trash|length >= 1) and (water|length >= 1) and (energy|length >= 1)) %}
+						<button class="mx-auto nav-link py-2 px-0 px-lg-2 rounded btn-secondary"><a class="text-decoration-none" href="/calculate">Перейти к отчету</a> </button>
+					{% else %}
+					<div class="p5">Для того, чтобы перейти к отчету, заполните все формы.</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<!-- Footer-->
+<footer class="footer text-center">
+	<div class="container">
+		<div class="row">
+			<!-- Footer Location-->
+			<div class="col-lg-4 mb-5 mb-lg-0">
+				<h4 class="text-uppercase mb-4">адрес</h4>
+				<p class="lead mb-0">
+					пр. Ленина, 76, Челябинск
+				</p>
+			</div>
+			<!-- Footer Social Icons-->
+			<div class="col-lg-4 mb-5 mb-lg-0">
+				<h4 class="text-uppercase mb-4">соцсети</h4>
+				<a class="btn btn-outline-light btn-social mx-1" href="https:\\vk.com/hitrij_tatarin"><i class="fab fa-fw fa-vk"></i></a>
+				<a class="btn btn-outline-light btn-social mx-1" href="https:\\github.com/burcev60"><i class="fab fa-fw fa-github"></i></a>
+				<a class="btn btn-outline-light btn-social mx-1" href="https:\\google.com"><i class="fab fa-fw fa-instagram"></i></a>
+			</div>
+			<!-- Footer About Text-->
+			<div class="col-lg-4">
+				<h4 class="text-uppercase mb-4">ulca</h4>
+				<p class="lead mb-0">
+					Почта:
+					<a href="mailto:nikita-pronin@yandex.ru" class="text-decoration-none"> nikita-pronin@yandex.ru</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</footer>
+{% endblock %}
